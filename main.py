@@ -1,12 +1,12 @@
 from karaoke import Karaoke
-from music_player import PlaySoundMusicPlayer
+from gui import TkinterGUI
 
 
 def main():
-    vlc = PlaySoundMusicPlayer()
-    vlc.play("C:\\Users\\tobia\\Desktop\\musicas\\karaoke\\nightjar.wav")
-    # karaoke = Karaoke("C:\\Users\\tobia\\Desktop\\musicas\\karaoke")
-    # karaoke.run()
+    files_path = "C:\\Users\\tobia\\Desktop\\musicas\\karaoke"
+    karaoke = Karaoke(files_path)
+    gui = TkinterGUI(karaoke, files_path)
+    gui.run()
 
 
 if __name__ == '__main__':

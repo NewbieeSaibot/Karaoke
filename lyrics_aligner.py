@@ -19,8 +19,8 @@ def align_lyrics_with_audio(lyrics: str, audio_path: str, verbose_plot: bool = F
     torch.random.manual_seed(0)
 
     # SPEECH_FILE = torchaudio.utils.download_asset("tutorial-assets/Lab41-SRI-VOiCES-src-sp0307-ch127535-sg0042.wav")
-    # SPEECH_FILE = torchaudio.utils.download_asset(audio_path)
-    SPEECH_FILE = torchaudio.utils.download_asset("C:\\Users\\tobia\\Desktop\\dontgo.wav")
+    SPEECH_FILE = torchaudio.utils.download_asset(audio_path)
+    # SPEECH_FILE = torchaudio.utils.download_asset("C:\\Users\\tobia\\Desktop\\dontgo.wav")
 
     # Generate frame-wise label probability
     bundle = torchaudio.pipelines.WAV2VEC2_ASR_BASE_960H
@@ -42,8 +42,8 @@ def align_lyrics_with_audio(lyrics: str, audio_path: str, verbose_plot: bool = F
         plt.show()
 
     # transcript = "I|HAD|THAT|CURIOSITY|BESIDE|ME|AT|THIS|MOMENT"
-    transcript = "DON'T|GO|WASTIN'|MY|TIME|OUTTA|YOUR|MIND|ARE|YOU|OUT|OF|YOUR|MIND|I|AIN'T|MAKIN'|YOU|MINE|I|WANNA|SEE|YOU|GONE"
-    # transcript = lyrics
+    # transcript = "DON'T|GO|WASTIN'|MY|TIME|OUTTA|YOUR|MIND|ARE|YOU|OUT|OF|YOUR|MIND|I|AIN'T|MAKIN'|YOU|MINE|I|WANNA|SEE|YOU|GONE"
+    transcript = lyrics
     dictionary = {c: i for i, c in enumerate(labels)}
 
     tokens = [dictionary[c] for c in transcript]
@@ -256,5 +256,5 @@ def align_lyrics_with_audio(lyrics: str, audio_path: str, verbose_plot: bool = F
     return final_word_list
 
 
-aligned_words = align_lyrics_with_audio("", "")
-print(aligned_words)
+# aligned_words = align_lyrics_with_audio("", "")
+# print(aligned_words)

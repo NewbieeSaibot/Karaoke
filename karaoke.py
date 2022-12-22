@@ -1,3 +1,5 @@
+from lyrics_aligner import align_lyrics_with_audio
+from lyrics_extractor import LyricsExtractor
 from music_player import MusicPlayer, PyGameMusicPlayer
 from un_mix_model import UnMixModel, Demucs3
 from speech_recognition_model import GoogleRecognizer, SpeechRecognitionModel
@@ -24,7 +26,11 @@ class Karaoke:
         self.__show_lyrics()
 
     def __show_lyrics(self):
-        print(self.recognition_model.predict(self.vocal_audio_path))
+        le = LyricsExtractor()
+        lyric = le.extract()
+        print(lyric)
+        aligned_words = align_lyrics_with_audio(lyric, self.vocal_audio_path)
+        print(aligned_words)
 
     def __get_music_list(self):
         return os.listdir(self.files_path)

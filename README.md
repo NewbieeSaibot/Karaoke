@@ -34,3 +34,13 @@ performance following the aligned lyric.</p>
   <li>Use video to evaluate performance</li>
   <li>Use Music Transcription on vocals to show the notes for the singer</li>
 </ul>
+
+
+### How to Use
+
+<ol>
+    <li>Clone Repo.</li>
+    <li>Install requirements.txt.</li>
+    <li>Change paths that are fixed inside the code. (This happens cause I just wanna see this project working as fast as possible and it still being a PoC and not a real software.li>
+    <li>Run it.</li>
+</ol>

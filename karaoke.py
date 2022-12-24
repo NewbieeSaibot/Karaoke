@@ -1,4 +1,4 @@
-from lyrics_aligner import align_lyrics_with_audio
+from lyrics_aligner import LyricsAligner
 from lyrics_extractor import LyricsExtractor
 from music_player import MusicPlayer, PyGameMusicPlayer
 from un_mix_model import UnMixModel, Demucs3
@@ -29,7 +29,7 @@ class Karaoke:
         le = LyricsExtractor()
         lyric = le.extract()
         print(lyric)
-        aligned_words = align_lyrics_with_audio(lyric, self.vocal_audio_path)
+        aligned_words = LyricsAligner().align(lyric, self.vocal_audio_path)
         print(aligned_words)
 
     def __get_music_list(self):

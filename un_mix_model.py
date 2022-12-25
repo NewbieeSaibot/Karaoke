@@ -7,33 +7,31 @@ import soundfile
 
 
 class UnMixModel(ABC):
-    def __init__(self):
-        pass
+    def __init__(self, base_path: str):
+        self.base_path = base_path
 
     def predict(self, audio: np.ndarray):
         pass
 
 
 class Demucs3(UnMixModel):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, base_path: str):
+        super().__init__(base_path)
 
-    def predict(self, audio_path: str) -> Tuple[str, str]:
-        audio_name = audio_path.split("\\")[-1].split(".")[0]
-        base_path = "C:\\Users\\tobia\\Desktop\\karaoke\\separated\\mdx_extra_q"
-        if os.path.exists(os.path.join(base_path, audio_name)):
-            return (os.path.join(base_path, audio_name, "vocals.wav"),
-                    os.path.join(base_path, audio_name, "no_vocal.wav"))
+    def predict(self, music_name: str) -> Tuple[str, str]:
+        separated_files_path = os.path.join(os.getcwd(), "separated", "mdx_extra_q")
+        if os.path.exists(os.path.join(separated_files_path, music_name)):
+            return (os.path.join(separated_files_path, music_name, "vocals.wav"),
+                    os.path.join(separated_files_path, music_name, "no_vocal.wav"))
 
-        self.run_model(audio_path)
-        self.build_no_vocals(os.path.join(base_path, audio_name))
-        return (os.path.join(base_path, audio_name, "vocals.wav"),
-                os.path.join(base_path, audio_name, "no_vocal.wav"))
+        self.run_model(music_name)
+        self.build_no_vocals(os.path.join(separated_files_path, music_name))
+        return (os.path.join(separated_files_path, music_name, "vocals.wav"),
+                os.path.join(separated_files_path, music_name, "no_vocal.wav"))
 
     @staticmethod
-    def run_model(audio_path: str):
-        print(f"python -m demucs3 \"{audio_path}\"")
-        os.system(f"python -m demucs3 \"{audio_path}\"")
+    def run_model(music_name: str):
+        os.system(f"python -m demucs3 \"{music_name}\"")
 
     @staticmethod
     def build_no_vocals(audios_path: str):

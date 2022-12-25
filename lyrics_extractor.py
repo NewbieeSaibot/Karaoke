@@ -1,3 +1,4 @@
+import os
 
 
 class LyricsExtractor:
@@ -11,8 +12,9 @@ class LyricsExtractor:
         return text
 
     def extract(self, music_name: str = "nightjar") -> str:
+        base_path = "C:\\Users\\tobia\\Desktop\\musicas\\karaoke"
         if music_name == "nightjar":
-            file = open("C:\\Users\\tobia\\Desktop\\musicas\\karaoke\\nightjar.txt", "r")
+            file = open(os.path.join(base_path, music_name, music_name + ".txt"), "r")
             lines = file.readlines()
             lyric = ""
             for line in lines:

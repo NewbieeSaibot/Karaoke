@@ -8,36 +8,47 @@ import threading
 
 
 class Karaoke:
-    def __init__(self, files_path: str, music_player: MusicPlayer = PyGameMusicPlayer,
+    """
+    This class is an abstraction to the karaoke functionalities.
+    Main functionality is to realize the orchestration of machine learning models to initialize a single
+    run.
+    """
+    def __init__(self, base_path: str, music_player: MusicPlayer = PyGameMusicPlayer,
                  un_mix_model: UnMixModel = Demucs3,
                  speech_recognition_model: SpeechRecognitionModel = GoogleRecognizer):
-        self.files_path = files_path
+        self.base_path = base_path
         self.music_list = self.__get_music_list()
-        self.un_mix_model = un_mix_model()
+
+        self.un_mix_model = un_mix_model(base_path)
         self.recognition_model = speech_recognition_model()
+        self.lyrics_aligner = LyricsAligner(base_path)
+        self.lyrics_extractor = LyricsExtractor()
         self.music_player = music_player()
-        self.vocal_audio_path = None
-        self.no_vocal_audio_path = None
 
     def start_karaoke(self, selected_music_name: str):
-        music_path = os.path.join(self.files_path, selected_music_name)
-        self.vocal_audio_path, self.no_vocal_audio_path = self.__separate_tracks(music_path)
-        self.__play_music(self.no_vocal_audio_path)
-        self.__show_lyrics()
+        """Do every necessary logic to start to sing a new music.
+        1. If necessary calculate the separated tracks with unmix model.
+        2. If necessary align the lyrics with the vocal audio.
+        3. Play the music with no vocal.
+        4. Show the Lyrics in the GUI.
+        """
+        vocal_audio_path, no_vocal_audio_path = self.un_mix_model.predict(selected_music_name)
+        aligned_lyrics = self.__get_aligned_lyrics(selected_music_name, vocal_audio_path)
+        self.__play_music(no_vocal_audio_path)
+        self.__show_lyrics(aligned_lyrics)
 
-    def __show_lyrics(self):
-        le = LyricsExtractor()
-        lyric = le.extract()
-        print(lyric)
-        aligned_words = LyricsAligner().align(lyric, self.vocal_audio_path)
-        print(aligned_words)
+    def __get_aligned_lyrics(self, music_name: str, vocal_audio_path: str):
+        lyric = self.lyrics_extractor.extract()
+        aligned_words = self.lyrics_aligner.align(lyric, vocal_audio_path, music_name)
+        return aligned_words
+
+    def __show_lyrics(self, aligned_lyrics: str):
+        # interact with GUI
+        pass
 
     def __get_music_list(self):
-        return os.listdir(self.files_path)
+        return os.listdir(self.base_path)
 
     def __play_music(self, music_path: str):
         x = threading.Thread(target=self.music_player.play, args=(music_path,))
         x.start()
-
-    def __separate_tracks(self, audio_path: str):
-        return self.un_mix_model.predict(audio_path)

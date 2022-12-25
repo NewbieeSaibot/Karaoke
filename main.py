@@ -3,9 +3,10 @@ from gui import TkinterGUI
 
 
 def main():
-    files_path = "C:\\Users\\tobia\\Desktop\\musicas\\karaoke"
-    karaoke = Karaoke(files_path)
-    gui = TkinterGUI(karaoke, files_path)
+    music_files_path = "C:\\Users\\tobia\\Desktop\\musicas\\karaoke"
+
+    karaoke = Karaoke(music_files_path)
+    gui = TkinterGUI(karaoke, music_files_path)
     gui.run()
 
 

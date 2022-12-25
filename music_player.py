@@ -14,9 +14,9 @@ class PyGameMusicPlayer(MusicPlayer):
     def __init__(self):
         mixer.init()
 
-    def play(self, audio):
+    def play(self, music_path: str):
         # Load audio file
-        mixer.music.load(audio)
+        mixer.music.load(music_path)
 
         print("music started playing....")
 

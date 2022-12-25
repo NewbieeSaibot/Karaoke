@@ -7,21 +7,28 @@ import matplotlib.pyplot as plt
 import librosa
 import soundfile
 import os
+import pickle
 
 
 class LyricsAligner:
-    def __init__(self):
-        pass
+    def __init__(self, base_path: str):
+        self.base_path = base_path
 
-    def align(self, lyrics: str, audio_path: str):
-        wave, sr = librosa.load(audio_path)
+    def align(self, lyrics: str, vocal_audio_path: str, music_name: str):
+        # Does the aligned lyric already exists?
+        if os.path.exists(os.path.join(self.base_path, music_name, music_name + ".lrc")):
+            file = open(os.path.join(self.base_path, music_name, music_name + ".lrc"), "rb")
+            aligned_lyric = pickle.load(file)
+            file.close()
+            return aligned_lyric
+
+        wave, sr = librosa.load(vocal_audio_path)
         waves, offset_times = self.__separate_waves(wave, sr)
+        if not os.path.exists(os.path.join(self.base_path, music_name, "tmp")):
+            os.mkdir(os.path.join(self.base_path, music_name, "tmp"))
 
-        # if not os.path.exists("C:\\Users\\tobia\\Desktop\\karaoke\\tmp"):
-        #     os.mkdir("C:\\Users\\tobia\\Desktop\\karaoke\\tmp")
-
-        # for i in range(len(waves)):
-        #     soundfile.write(f"./tmp/{i}.wav", waves[i], sr)
+        for i in range(len(waves)):
+            soundfile.write(os.path.join(self.base_path, music_name, "tmp", str(i) + ".wav"), waves[i], sr)
         cuts = [-1]
         for i in range(len(lyrics)):
             if lyrics[i] == "|":
@@ -31,12 +38,10 @@ class LyricsAligner:
         final_alignment = []
         last_index = 0
         offset_list = []
-        print(lyrics)
         for i in range(len(waves)):
             for j in range(len(cuts) - (last_index + 1)):
                 sublyric = lyrics[cuts[last_index] + 1:cuts[last_index + j + 1]]
-                print(sublyric)
-                curr_align = self.align_lyrics_with_audio(sublyric, f"C:\\Users\\tobia\\Desktop\\karaoke\\tmp\\{i}.wav",
+                curr_align = self.align_lyrics_with_audio(sublyric, os.path.join(self.base_path, music_name, "tmp", str(i) + ".wav"),
                                                           verbose_plot=False)
                 if j != 0:
                     if curr_align[j]['initial_percentage'] < final_alignment[-1]['final_percentage'] and \
@@ -54,6 +59,11 @@ class LyricsAligner:
             final_alignment[i]["initial_percentage"] += offset_times[offset_list[i]]
             final_alignment[i]["final_percentage"] += offset_times[offset_list[i]]
 
+        # save aligned lyric
+        file = open(os.path.join(self.base_path, music_name, music_name + ".lrc"), "wb")
+        pickle.dump(final_alignment, file)
+        file.close()
+
         return final_alignment
 
     def get_amp_envelope(self, wave: np.ndarray, window_size: int):
@@ -66,7 +76,6 @@ class LyricsAligner:
     def detect_separation_points(self, amp_envelope: np.ndarray, sample_rate: int, window_size: int):
         amp_envelope = (amp_envelope - np.min(amp_envelope)) / np.max(amp_envelope)
         noise_level = 0.05  # np.percentile(amp_envelope, [50])
-        print(noise_level)
         threshold = 6 * noise_level
         start_points, end_points = [], []
         mode = 0
@@ -93,7 +102,6 @@ class LyricsAligner:
         minimum_considered_frequency = 20
         time_of_complete_wave_at_minimum_frequency = 1/minimum_considered_frequency
         frames_per_wave_at_min_freq = 8 * int(time_of_complete_wave_at_minimum_frequency * sample_rate)
-        print("window_size", frames_per_wave_at_min_freq)
         amp_envelope = self.get_amp_envelope(wave, frames_per_wave_at_min_freq)
         separation_points = self.detect_separation_points(amp_envelope, sample_rate, frames_per_wave_at_min_freq)
 
@@ -344,7 +352,6 @@ class LyricsAligner:
 
         total_number_of_windows = emission.shape[0]
         audio_duration = waveform.shape[1] / sample_rate
-        print("audio duration", audio_duration)
         final_word_list = []
         for word in word_segments:
             word_item = {"word": word.label,

@@ -15,12 +15,12 @@ performance following the aligned lyric.</p>
   <li>Music Player</li>
   <li>Auto alignment algorithm</li>
   <li>Unmix algorithm</li>
+  <li>Simple Lyrics Display</li>
 </ul>
 
 ### Necessary Features Not Implemented
 
 <ul>
-  <li>Show aligned lyrics in GUI while playing the music</li>
   <li>Music Folder Picker</li>
   <li>Lyric scrapper</li>
 </ul>

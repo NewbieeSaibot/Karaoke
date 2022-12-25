@@ -22,7 +22,6 @@ performance following the aligned lyric.</p>
 <ul>
   <li>Show aligned lyrics in GUI while playing the music</li>
   <li>Music Folder Picker</li>
-  <li>Change the fixed paths inside the code</li>
   <li>Lyric scrapper</li>
 </ul>
 

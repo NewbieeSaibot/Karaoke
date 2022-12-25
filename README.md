@@ -41,6 +41,7 @@ performance following the aligned lyric.</p>
 <ol>
     <li>Clone Repo.</li>
     <li>Install requirements.txt.</li>
-    <li>Change paths that are fixed inside the code. (This happens cause I just wanna see this project working as fast as possible and it still being a PoC and not a real software.li>
+    <li>Build the correct folder structure with your music<li>
+    <li>Change path inside main.py to the folder with your musics</li>
     <li>Run it.</li>
 </ol>

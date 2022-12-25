@@ -44,3 +44,25 @@ performance following the aligned lyric.</p>
     <li>Change path inside main.py to the folder with your musics</li>
     <li>Run it.</li>
 </ol>
+
+#### Folder structure
+<p>The folder structure is pretty simple. Basically you will need to create a folder with any name and create one folder inside it for every music you want to put on karaoke list. Example of a structure with two musics called "music_a" and "music_b":</p>
+<ul>
+  <li>
+  MainFolder
+  </li>
+  <ul>
+      <li>music_a
+      <ul>
+          <li>music_a.wav</li>
+      </ul>
+      </li>
+      <li>music_b
+      <ul>
+        <li>music_b.mp3</li>
+        </ul>
+    </li>
+  </ul>
+ </ul>
+
+

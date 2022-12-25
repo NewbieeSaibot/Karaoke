@@ -40,8 +40,8 @@ performance following the aligned lyric.</p>
 
 <ol>
     <li>Clone Repo.</li>
-    <li>Install requirements.txt.</li>
-    <li>Build the correct folder structure with your music<li>
+    <li>Install requirements.txt</li>
+    <li>Build the correct folder structure with your music</li>
     <li>Change path inside main.py to the folder with your musics</li>
     <li>Run it.</li>
 </ol>

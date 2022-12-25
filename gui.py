@@ -30,6 +30,17 @@ class TkinterGUI(GUI):
 
         play_button = tk.Button(window, text="Start", command=self.play_function)
         play_button.pack(expand=False, fill=tk.BOTH)
+
+        lyrics_box = tk.Text(
+            window,
+            height=30,
+            width=100,
+            font=(None, 15),
+            state='disabled'
+        )
+        lyrics_box.pack(expand=False, fill=tk.BOTH)
+        self.karaoke.lyrics_box_reference = lyrics_box
+
         window.mainloop()
 
     def play_function(self):

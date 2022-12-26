@@ -40,7 +40,8 @@ class Karaoke:
         self.__show_lyrics(aligned_lyrics)
 
     def __get_aligned_lyrics(self, music_name: str, vocal_audio_path: str):
-        lyric = self.lyrics_extractor.extract()
+        lyric = self.lyrics_extractor.extract(music_name)
+        print(lyric)
         aligned_words = self.lyrics_aligner.align(lyric, vocal_audio_path, music_name)
         return aligned_words
 

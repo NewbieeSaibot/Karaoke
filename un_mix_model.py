@@ -29,9 +29,10 @@ class Demucs3(UnMixModel):
         return (os.path.join(separated_files_path, music_name, "vocals.wav"),
                 os.path.join(separated_files_path, music_name, "no_vocal.wav"))
 
-    @staticmethod
-    def run_model(music_name: str):
-        os.system(f"python -m demucs3 \"{music_name}\"")
+    def run_model(self, music_name: str):
+        music_path = os.path.join(self.base_path, music_name, music_name + ".mp3")
+        print(f"python -m demucs3 \"{music_path}\"")
+        os.system(f"python -m demucs3 \"{music_path}\"")
 
     @staticmethod
     def build_no_vocals(audios_path: str):
